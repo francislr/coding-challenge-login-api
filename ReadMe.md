@@ -1,5 +1,28 @@
 # TLM Ninja login API Coding challenge
 
+My take on the TLM Ninja Coding Challenge 🐱‍👤
+
+## Installation
+
+* Create and activate a Python Virtual Environment
+* Install dependencies from `requirements.txt`<br>
+  `pip install -r requirements.txt`
+* Copy `therewasanattempt/settings.py.dist` to `therewasanattempt/settings.py`
+* Edit `therewasanattempt/settings.py`
+  * By default, the `SECRET_KEY` setting is taken from the `APP_SECRET` environment variable
+* Run the usual Django setup commands:
+  * `python manage.py migrate`
+  * `python manage.py createsuperuser`
+
+## Project structure
+
+<dl>
+  <dt><i>therewasanattempt/</i></dt>
+  <dd>Django project directory</dd>
+</dl>
+
+# The Challenge
+
 Your mission: Create and deploy a `django` application exposing a REST API that will provide details on _login attempts_.
 Example details would be IP Address, Region, success and failure attempts count, anything else you think that sounds interesting.
 

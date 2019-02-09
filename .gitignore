@@ -1,0 +1,11 @@
+# Python Virtual Environment
+env/
+# SQLite database
+db.sqlite3
+# Python cache files
+*.pyc
+__pycache__/
+# Editor files
+.vscode/
+# Django settings file
+therewasanattempt/settings.py
