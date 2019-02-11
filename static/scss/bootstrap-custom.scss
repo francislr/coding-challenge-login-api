@@ -1,0 +1,24 @@
+// Bootstrap Customization
+//
+// Apply our custom colors to Bootstrap
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+// No rounded border corners
+$enable-rounded:                false;
+$input-btn-focus-width:         2px;
+$alert-bg-level:                4;
+$alert-border-level:            6;
+$alert-color-level:             -12;
+$theme-colors: (
+  "primary": #2574ab,
+  "danger": #b52b27,
+  "warning": #bf7c1d,
+  "success": #259dab,
+  "secondary": #505b72,
+);
+
+@import "bootstrap/scss/bootstrap.scss";
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fortawesome/fontawesome-free/scss/regular.scss";
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
