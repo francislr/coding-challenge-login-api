@@ -71,6 +71,10 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'),
+]
+
 WSGI_APPLICATION = 'therewasanattempt.wsgi.application'
 
 
