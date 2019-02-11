@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LoginView, LogoutView, TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import AttemptEventView
 
 urlpatterns = [
     path('api/login', obtain_auth_token, name='api-login'),
     path('api/attempt-event', AttemptEventView.as_view(), name='api-list-attempt-event'),
+    path('login', LoginView.as_view(template_name='therewasanattempt/login.html'), name='login'),
+    path('logout', LogoutView.as_view(), name='logout'),
     path('admin/', admin.site.urls),
 ]

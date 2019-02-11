@@ -1,0 +1,20 @@
+
+@each $color, $value in $theme-colors {
+    .table-style-#{$color} thead th {
+        border-bottom: 0;
+        border-top: 0;
+        background-color: $value;
+        color: color-yiq($value);
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 75%;
+        letter-spacing: 1px;
+    }
+
+    .table-style-#{$color} td {
+        background-color: theme-color-level($color, -12);
+        border-top: 1px solid theme-color-level($color, -8);
+    }
+}
+
+table td { white-space: nowrap; }

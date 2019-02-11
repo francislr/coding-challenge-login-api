@@ -9,15 +9,18 @@ module.exports = {
   mode: 'development',
   entry: [
     './static/scss/bootstrap-custom.scss',
+    './static/images/contoso-logo.png',
+    './static/images/banner.jpg',
   ],
   output: {
-    path: outputDirectory
+    path: outputDirectory,
+    filename: 'js/main.js'
   },
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
     new MiniCssExtractPlugin({
       filename: "css/[name].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "css/[name].css"
     }),
   ],
   module: {
@@ -28,13 +31,20 @@ module.exports = {
           loader: 'file-loader',
           options: {
             name: '[name].[ext]',
+            publicPath: '../fonts',
             outputPath: 'fonts'
           }
         }
       },
       {
         test: /\.(jpg|png|gif)$/i,
-        use: 'file-loader'
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'images'
+          }
+        }
       },
       {
         test: /\.(scss)$/,

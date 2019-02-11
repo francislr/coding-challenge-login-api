@@ -1,0 +1,45 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html class="h-100">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sign In Required</title>
+        <link href="{% static "/therewasanattempt/css/main.css" %}" rel="stylesheet">
+    </head>
+    <body class="h-100">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <section class="signin">
+            <div>
+                <h3 class="signin-heading-logo" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({% static "/therewasanattempt/images/banner.jpg" %});">
+                    <img class="align-bottom" src="{% static "/therewasanattempt/images/contoso-logo.png" %}" width="64" height="64"><br>
+                    Contoso Corporation
+                </h3>
+                <form action="{{ app_path }}" method="post">
+                    {% csrf_token %}
+                    {% include "therewasanattempt/error.html" with errors=form.non_field_errors %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="id_username" name="username" placeholder="Username" maxlength="20" value="{{ form.username.value|default_if_none:'' }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-white">@contoso.com</span>
+                        </div>
+                    </div>
+                    <input type="password" id="id_password" class="form-control border-top-0 mb-3" name="password" placeholder="Password">
+                    <button class="btn btn-lg btn-primary btn-block mt-1" name="Submit" value="SIGNIN" type="Submit">Sign In</button>
+                    <script type="text/javascript">
+                        (function () {
+                            var username = document.getElementById('id_username'),
+                                password = document.getElementById('id_password');
+                            (username.value === '' ? username : password).focus();
+                        })();
+                    </script>
+                </form>
+            </div>
+        </section>
+  </body>
+</html>
