@@ -4,28 +4,30 @@
     <h6 class="card-header"><i class="fa fa-shield-alt"></i> Authentication Attempt Events</h6>
     <div class="card-body container-fluid">
         <form class="" method="GET" action="/projects">
-            <table class="table table-style-secondary">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Username</th>
-                        <th class="text-center" style="width: 160px;">IP Address</th>
-                        <th>User Agent</th>
-                        <th class="text-center" style="width: 160px;">Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in object_list %}
-                    <tr>
-                        <td class="text-center">{{ row.time_created }}</td>
-                        <td>{{ row.username }}</td>
-                        <td class="text-center">{{ row.ip_address }}</td>
-                        <td style="white-space:normal;">{{ row.user_agent }}</td>
-                        <td class="text-center">{{ row.get_result_display }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-style-secondary">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Username</th>
+                            <th class="text-center" style="width: 160px;">IP Address</th>
+                            <th>User Agent</th>
+                            <th class="text-center" style="width: 160px;">Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in object_list %}
+                        <tr>
+                            <td class="text-center">{{ row.time_created }}</td>
+                            <td>{{ row.username }}</td>
+                            <td class="text-center">{{ row.ip_address }}</td>
+                            <td style="white-space:normal;">{{ row.user_agent }}</td>
+                            <td class="text-center">{{ row.get_result_display }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <!-- End Data Table Section -->
         </form>
     </div>
