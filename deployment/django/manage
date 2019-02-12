@@ -1,0 +1,4 @@
+#!/bin/bash
+export APP_SECRET=$(cat /var/run/secrets/APP_SECRET)
+python manage.py ${@:1}
+

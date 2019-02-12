@@ -1,0 +1,4 @@
+#!/bin/bash
+export APP_SECRET=$(cat /var/run/secrets/APP_SECRET)
+gunicorn therewasanattempt.wsgi:application --bind "0.0.0.0:8000"
+

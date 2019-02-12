@@ -1,0 +1,43 @@
+version: "3.1"
+services:
+  django:
+    build:
+      dockerfile: ./deployment/django/Dockerfile
+      context: ../
+    command: gunicorn therewasanattempt.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ../database:/code/database
+      - /var/log/nginx:/var/log/nginx
+      - ../therewasanattempt/settings.py:/code/therewasanattempt/settings.py
+      - ../therewasanattempt/static:/code/therewasanattempt/static
+      - ../static:/code/static
+    networks:
+       - webapps
+    secrets:
+       - APP_SECRET
+
+  nginx: 
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/www.conf
+      - ../static:/code/static
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - webapps
+
+  frontend:
+    build:
+      dockerfile: ./deployment/node-frontend/Dockerfile
+      context: ../
+    command: /code/node_modules/.bin/webpack-cli --production
+    volumes:
+      - ../therewasanattempt/static:/code/therewasanattempt/static
+
+networks:
+  webapps: ~
+
+secrets:
+  APP_SECRET:
+    file: ./config/app_secret.txt

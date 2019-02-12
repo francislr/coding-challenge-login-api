@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker-compose build django
+docker-compose build frontend
+docker-compose run django manage migrate
+docker-compose run django manage collectstatic --noinput
+
