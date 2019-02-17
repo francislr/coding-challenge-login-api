@@ -125,6 +125,51 @@ class AuthAttemptViewTestCase(TestCase):
         attempt_event = AttemptEvent.objects.get(username=form_values['username'])
         self.assertEqual(attempt_event.result, AUTHENTICATION_RESULT_SUCCESS)
 
+    def test_authenticate_success_using_decorator(self):
+        """
+        Successfuly authenticate using a decorated view
+        Test the logging of the event to database
+        """
+        from .models import AUTHENTICATION_RESULT_SUCCESS
+        from django.http import HttpResponse
+        from .decorators import log_success_auth_attempt
+        AttemptEvent.objects.all().delete()
+
+        def get_request(method, form_values):
+            request = super(Client, self.factory).request()
+            request.method = method
+            if request.method == 'POST':
+                request.POST = form_values
+            return request
+
+        @log_success_auth_attempt(username_field='username', success_status_code=200)
+        def success_view(request):
+            # 200 = OK
+            return HttpResponse(status=200)
+
+        @log_success_auth_attempt(username_field='username', success_status_code=200)
+        def fail_view(request):
+            # 403 = Forbidden
+            return HttpResponse(status=403)
+
+        # GET requests must not log
+        success_view(get_request('GET', {'username': 'ABC'}))
+        self.assertEqual(AttemptEvent.objects.count(), 0)
+
+        # POST requests with '200' response code must log to database
+        success_view(get_request('POST', {'username': 'ABC'}))
+        self.assertEqual(AttemptEvent.objects.count(), 1)
+
+        # POST requests with '203' response code must not log to database
+        fail_view(get_request('POST', {'username': 'ABC'}))
+        self.assertEqual(AttemptEvent.objects.count(), 1)
+
+        # POST requests with '200' response code without username field
+        # must log empty username to database
+        success_view(get_request('POST', {}))
+        self.assertEqual(AttemptEvent.objects.count(), 2)
+        self.assertEqual(AttemptEvent.objects.filter(username='').count(), 1)
+
 class AuthAttemptTestCase(TestCase):
     def setUp(self):
         pass
