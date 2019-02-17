@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from rest_framework.authtoken.views import obtain_auth_token
+from .apps.security_auth_attempt.decorators import log_success_auth_attempt as decorate_log_success_auth_attempt
 from .views import AttemptEventView, AttemptEventListView
 
+log_success_auth_attempt = decorate_log_success_auth_attempt(username_field='username', success_status_code=200)
+
 urlpatterns = [
-    path('api/login', obtain_auth_token, name='api-login'),
+    path('api/login', csrf_exempt(log_success_auth_attempt(obtain_auth_token)), name='api-login'),
     path('api/attempt-event', AttemptEventView.as_view(), name='api-list-attempt-event'),
     path('', login_required(AttemptEventListView.as_view()), name='list-attempt-event'),
     path('login', LoginView.as_view(template_name='therewasanattempt/login.html'), name='login'),
