@@ -207,19 +207,23 @@ class AuthAttemptTestCase(TestCase):
         self.assertEqual(attempt_event.user_agent, None)
         self.assertEqual(attempt_event.ip_address, request.META['REMOTE_ADDR'])
 
-    def test_creation_from_request_without_ip_addr(self):
-        """
-        Note: Creation without IP Address must fail because it is most likely due to misconfig.
-        """
-        form_values = {'username': 'example', 'password': 'example'}
+class UtilTest(SimpleTestCase):
+    def test_get_user_ip_address(self):
+        from .util import get_user_ip_address
+
+        # get_user_ip_address must return REMOTE_ADDR when no X-Forwarded-For
         request = HttpRequest()
-        request.method = 'POST'
-        request.POST = form_values
+        request.META['REMOTE_ADDR'] = '127.0.0.1'
+        self.assertEqual(get_user_ip_address(request), '127.0.0.1')
 
-        try:
-            del request.META['REMOTE_ADDR']
-        except KeyError:
-            pass
+        # get_user_ip_address must return last address in X-Forwarded-For
+        request = HttpRequest()
+        request.META['REMOTE_ADDR'] = '127.0.0.1'
+        request.META['HTTP_X_FORWARDED_FOR'] = '172.10.1.1, 172.10.1.2, 172.10.1.3'
+        self.assertEqual(get_user_ip_address(request), '172.10.1.3')
 
-        with self.assertRaises(RuntimeError):
-            attempt_event = AttemptEvent.from_request(request)
+        # get_user_ip_address must return last address in X-Forwarded-For
+        request = HttpRequest()
+        request.META['REMOTE_ADDR'] = '127.0.0.1'
+        request.META['HTTP_X_FORWARDED_FOR'] = '172.10.1.1'
+        self.assertEqual(get_user_ip_address(request), '172.10.1.1')

@@ -37,6 +37,7 @@ class AttemptEvent(models.Model):
         """
         Create a new AttemptEvent from HTTP request object
         """
+        from .util import get_user_ip_address
         attempt_event = AttemptEvent()
 
         # Store User-Agent header if present
@@ -46,9 +47,6 @@ class AttemptEvent(models.Model):
             attempt_event.user_agent = None
 
         # Store IP address
-        if 'REMOTE_ADDR' in request.META:
-            attempt_event.ip_address = request.META['REMOTE_ADDR']
-        else:
-            raise RuntimeError('REMOTE_ADDR in request.META is not present')
+        attempt_event.ip_address = get_user_ip_address(request)
 
         return attempt_event
