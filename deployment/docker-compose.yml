@@ -4,10 +4,8 @@ services:
     build:
       dockerfile: ./deployment/django/Dockerfile
       context: ../
-    command: gunicorn therewasanattempt.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ../database:/code/database
-      - /var/log/nginx:/var/log/nginx
       - ../therewasanattempt/settings.py:/code/therewasanattempt/settings.py
       - ../therewasanattempt/static:/code/therewasanattempt/static
       - ../static:/code/static
@@ -21,6 +19,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/www.conf
       - ../static:/code/static
+      - /var/log/nginx:/var/log/nginx
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
     ports:
       - 80:80
       - 443:443
