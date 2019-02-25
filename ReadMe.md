@@ -18,6 +18,7 @@ It also provides a fully working project that demonstrates the use of the module
         'therewasanattempt.apps.security_auth_attempt.SecurityAuthAttemptConfig',
     ]
     ```
+* Run migrations: `python manage.py migrate`
 
 ## Setup development environment
 
@@ -53,22 +54,23 @@ The project exposes an API endpoint which can be used to retrieve the 30 most re
 For accessing the API, you must get an *AccessToken*.
 
 #### Request
-<dl>
-  <dt>URL</dt>
-  <dd>/api/login</dd>
-  <dt>Method</dt>
-  <dd>POST</dd>
-  <dt>Request Body</dt>
-  <dd><code>{<br>
-    &nbsp;&nbsp;"username": "{username}",<br>
-    &nbsp;&nbsp;"password": "{password}",<br>
-  }</code></dd>
-</dl>
+**URL**
+`/api/login`
+**Method**
+`POST`
+**Request Body**
+```
+{
+    "username": "{username}",
+    "password": "{password}"
+}
+```
 
 #### Responses
 ##### Success
-```{
-  "token": "{accessToken}"
+```
+{
+    "token": "{accessToken}"
 }
 ```
 ##### Error
@@ -85,32 +87,33 @@ Return the last 30 authentication events.
 You must supply a valid *AccessToken* 
 
 #### Request
-<dl>
-  <dt>URL</dt>
-  <dd>/api/attempt-event</dd>
-  <dt>Method</dt>
-  <dd>GET</dd>
-  <dt>Request Header</dt>
-  <dd><code>Authorization: Token {AccessToken}</code></dd>
-</dl>
+**URL**
+`/api/attempt-event`
+**Method**
+`GET`
+**Request Header**
+`Authorization: Token {AccessToken}`
 
 #### Responses
 ##### Success
-<code>[
-&nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_created": "1970-01-01T00:00:00.215339Z",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username": "ninja",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "1.1.1.1",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"user_agent": "Mozilla/5.0 (...",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"result": "SUCC"
-&nbsp;&nbsp;&nbsp;&nbsp;},
-    ...]</code>
-</code>
+```
+[
+    {
+        "time_created": "1970-01-01T00:00:00.215339Z",
+        "username": "ninja",
+        "ip_address": "1.1.1.1",
+        "user_agent": "Mozilla/5.0 (...",
+        "result": "SUCC"
+    },
+...
+]
+```
 ##### Error
-<code>{
-    &nbsp;&nbsp;"detail": "Authentication credentials were not provided."."
-  }</code>
-</code>
+```
+{
+    "detail": "Authentication credentials were not provided."."
+}
+```
 
 
 # The Challenge
@@ -122,29 +125,29 @@ Example details would be IP Address, Region, success and failure attempts count,
 
 ### Backend
 
-- [ ] Expose a REST API
-- [ ] Have a way to authenticate with the API
-- [ ] Write unit tests to validate API behaviour
+- [x] Expose a REST API
+- [x] Have a way to authenticate with the API
+- [x] Write unit tests to validate API behaviour
 
 ### Frontend
 
-- [ ] Have a frontend app, page or django view to login and consume the API
-- [ ] List login attempts with details
+- [x] Have a frontend app, page or django view to login and consume the API
+- [x] List login attempts with details
 
 ### The Rules
 
-- [ ] Deployed applicaton must be used on a secure connection (https)
-- [ ] Code must be open source
-- [ ] There must be a license for the code (of your choice)
-- [ ] You must use `git` (you can fork this repo or create a new one)
-- [ ] Commit messages should follow [the seven rules of a great Git commit message](https://chris.beams.io/posts/git-commit/)
-- [ ] Your project should follow [12 factor](https://12factor.net/) principles
+- [x] Deployed applicaton must be used on a secure connection (https)
+- [x] Code must be open source
+- [x] There must be a license for the code (of your choice)
+- [x] You must use `git` (you can fork this repo or create a new one)
+- [x] Commit messages should follow [the seven rules of a great Git commit message](https://chris.beams.io/posts/git-commit/)
+- [x] Your project should follow [12 factor](https://12factor.net/) principles
 
 ### Deliverable
 
-- [ ] Link to git repository
-- [ ] Url to live application
-- [ ] Credentials so we can try your application
+- [x] Link to git repository
+- [x] Url to live application
+- [x] Credentials so we can try your application
 
 ### Advices
 
