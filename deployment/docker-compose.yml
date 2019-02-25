@@ -28,6 +28,13 @@ services:
     networks:
       - webapps
 
+  certbot:
+    image: certbot/certbot
+    command: certbot-auto --nginx
+    volumes:
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+
   frontend:
     build:
       dockerfile: ./deployment/node-frontend/Dockerfile
