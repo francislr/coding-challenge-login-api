@@ -2,7 +2,24 @@
 
 My take on the TLM Ninja Coding Challenge 🐱‍👤
 
-## Installation
+## Introduction
+![Demo](demo.png)
+
+This project contains a reusable Django application that logs authentication events to database.
+It also provides a fully working project that demonstrates the use of the module.
+
+## Installation in an existing project
+
+* Install the package: `pip install git+https://github.com/francislr/coding-challenge-login-api`
+* Add the application to `settings.py`:
+    ```
+    INSTALLED_APPS = [
+        ...
+        'therewasanattempt.apps.security_auth_attempt.SecurityAuthAttemptConfig',
+    ]
+    ```
+
+## Setup development environment
 
 * Create and activate a Python Virtual Environment
 * Install dependencies from `requirements.txt`<br>
@@ -13,13 +30,88 @@ My take on the TLM Ninja Coding Challenge 🐱‍👤
 * Run the usual Django setup commands:
   * `python manage.py migrate`
   * `python manage.py createsuperuser`
+* Install frontend dependencies by typing `yarn` or `npm install`
+* Build the frontend: `yarn build` or `npm run build`
 
 ## Project structure
 
 <dl>
   <dt><i>therewasanattempt/</i></dt>
   <dd>Django project directory</dd>
+  <dt><i>static/</i></dt>
+  <dd>Frontend Assets</dd>
+  <dt><i>deployment/</i></dt>
+  <dd>Scripts for deployment with Docker</dd>
 </dl>
+
+## API
+
+The project exposes an API endpoint which can be used to retrieve the 30 most recent authentication events.
+
+### Authenticate
+
+For accessing the API, you must get an *AccessToken*.
+
+#### Request
+<dl>
+  <dt>URL</dt>
+  <dd>/api/login</dd>
+  <dt>Method</dt>
+  <dd>POST</dd>
+  <dt>Request Body</dt>
+  <dd><code>{<br>
+    &nbsp;&nbsp;"username": "{username}",<br>
+    &nbsp;&nbsp;"password": "{password}",<br>
+  }</code></dd>
+</dl>
+
+#### Responses
+##### Success
+```{
+  "token": "{accessToken}"
+}
+```
+##### Error
+```
+{
+    "non_field_errors": "Unable to log in with provided credentials."
+}
+```
+
+
+### Last 30 authentication events
+
+Return the last 30 authentication events.
+You must supply a valid *AccessToken* 
+
+#### Request
+<dl>
+  <dt>URL</dt>
+  <dd>/api/attempt-event</dd>
+  <dt>Method</dt>
+  <dd>GET</dd>
+  <dt>Request Header</dt>
+  <dd><code>Authorization: Token {AccessToken}</code></dd>
+</dl>
+
+#### Responses
+##### Success
+<code>[
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_created": "1970-01-01T00:00:00.215339Z",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username": "ninja",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ip_address": "1.1.1.1",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"user_agent": "Mozilla/5.0 (...",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"result": "SUCC"
+&nbsp;&nbsp;&nbsp;&nbsp;},
+    ...]</code>
+</code>
+##### Error
+<code>{
+    &nbsp;&nbsp;"detail": "Authentication credentials were not provided."."
+  }</code>
+</code>
+
 
 # The Challenge
 
