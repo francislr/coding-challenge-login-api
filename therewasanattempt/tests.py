@@ -68,6 +68,7 @@ class ApiAuthenticationTestCase(TestCase):
         Test the authentication event api list
         """
         client = APIClient()
+        token = self._get_access_token(client)
         dataset = [
             {'username': 'username1', 'ip_address': '1.0.0.0',
                 'user_agent': 'dummy', 'result': AUTHENTICATION_RESULT_FAILURE},
@@ -84,7 +85,6 @@ class ApiAuthenticationTestCase(TestCase):
                 AttemptEvent(**row).save()
             time_created = time_created + timedelta(hours=1)
 
-        token = self._get_access_token(client)
         client.credentials(HTTP_AUTHORIZATION='Token ' + token)
         response = client.get(reverse('api-list-attempt-event'))
         reply = json.loads(response.content)
